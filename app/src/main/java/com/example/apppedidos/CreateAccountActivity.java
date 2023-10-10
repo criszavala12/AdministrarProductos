@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CreateAccountActivity extends AppCompatActivity {
     EditText emailEditText, passwordEditText, confirmPasswordEditText;
@@ -33,47 +35,41 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         loginBtnTextView.setOnClickListener((v)->startActivity(new Intent(CreateAccountActivity.this,LoginActivity
                 .class)) );
-        createAccountBtn.setOnClickListener((v)->createAccount());
+       // createAccountBtn.setOnClickListener((v)->createAccount());
 
+        DatabaseHelper dbHelper;
+        dbHelper = new DatabaseHelper(this);
+
+        loginBtnTextView.setOnClickListener((v) -> startActivity(new Intent(CreateAccountActivity.this, LoginActivity.class)));
+
+        createAccountBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = emailEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
+                String confirmPassword = confirmPasswordEditText.getText().toString();
+
+                if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                    Toast.makeText(CreateAccountActivity.this, "Fill all the fields", Toast.LENGTH_SHORT).show();
+                } else if (!isValidEmail(email)) {
+                    Toast.makeText(CreateAccountActivity.this, "Invalid email format", Toast.LENGTH_SHORT).show();
+                } else if (!password.equals(confirmPassword)) {
+                    Toast.makeText(CreateAccountActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                } else {
+                    Boolean result = dbHelper.insertData(email, password);
+                    if (result) {
+                        Toast.makeText(CreateAccountActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(CreateAccountActivity.this, "Registration Failed!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
     }
 
-    void createAccount(){
-        String email  = emailEditText.getText().toString();
-        String password  = passwordEditText.getText().toString();
-        String confirmPassword  = confirmPasswordEditText.getText().toString();
-
-        boolean isValidated = validateData(email,password,confirmPassword);
-        if(!isValidated){
-            return;
-        }
-
-
-
-
-    }
-
-    boolean validateData(String email,String password,String confirmPassword){
-        //validate the data that are input by user.
-
-        if (email.isEmpty() && password.isEmpty() && confirmPassword.isEmpty()){
-            emailEditText.setError("Email is empty");
-            passwordEditText.setError("Password  is empty");
-            confirmPasswordEditText.setError("Confirm Password is empty");
-            return false;
-        }
-
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            emailEditText.setError("Email is invalid");
-            return false;
-        }
-        if(password.length()<6){
-            passwordEditText.setError("Password length is invalid");
-            return false;
-        }
-        if(!password.equals(confirmPassword)){
-            confirmPasswordEditText.setError("Password not matched");
-            return false;
-        }
-        return true;
+    private boolean isValidEmail(CharSequence target) {
+        return Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 }
