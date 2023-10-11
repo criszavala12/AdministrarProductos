@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-ImageButton opc;
+ImageButton opc,opc2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +20,11 @@ ImageButton opc;
         opc=findViewById(R.id.Opcion1);
         opc.setOnClickListener((v)->startActivity(new Intent(MainActivity.this,RestauranteActivity.class)) );
 
+        opc2=findViewById(R.id.Opcion2);
+        opc2.setOnClickListener((v)->startActivity(new Intent(MainActivity.this,BebidasActivity.class)) );
+
 
     }
+
+
 }

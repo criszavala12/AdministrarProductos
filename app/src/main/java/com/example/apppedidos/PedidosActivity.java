@@ -1,6 +1,8 @@
 package com.example.apppedidos;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -8,66 +10,31 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class PedidosActivity extends AppCompatActivity {
-    private EditText nombreClienteEditText;
-    private EditText apellidoClienteEditText;
-    private EditText direccionEditText;
-    private EditText productoEditText;
-    private EditText cantidadEditText;
-    private Button confirmarPedidoButton;
+import java.util.List;
 
-    @SuppressLint("WrongViewCast")
+public class PedidosActivity extends AppCompatActivity {
+    private RecyclerView recyclerView;
+    private BeverageAdapter adapter;
+    private List<Beverage> beverages;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedidos);
 
-        // Asigna las vistas a las variables
-        nombreClienteEditText = findViewById(R.id.editTextNombreCliente);
-        apellidoClienteEditText = findViewById(R.id.editTextApellidoCliente);
-        direccionEditText = findViewById(R.id.editTextDireccion);
-        productoEditText = findViewById(R.id.editTextProducto);
-        cantidadEditText = findViewById(R.id.editTextCantidad);
-        confirmarPedidoButton = findViewById(R.id.btnConfirmarPedido);
+        recyclerView = findViewById(R.id.recyler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Configura un Listener para el botón de confirmar pedido
-        confirmarPedidoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Llama a una función para realizar la validación
-                if (validarCampos()) {
-                    // Todos los campos son válidos, puedes realizar la acción deseada aquí
-                    String nombreCliente = nombreClienteEditText.getText().toString();
-                    String apellidoCliente = apellidoClienteEditText.getText().toString();
-                    String direccion = direccionEditText.getText().toString();
-                    String producto = productoEditText.getText().toString();
-                    int cantidad = Integer.parseInt(cantidadEditText.getText().toString());
+        // Crea una instancia de DatabaseHelper
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
 
-                    // Realiza la acción con los datos ingresados
-                }
-            }
-        });
-    }
+        // Obtiene la lista de bebidas desde la base de datos
+        beverages = dbHelper.getBeverageData();
 
-    // Función para validar los campos
-    private boolean validarCampos() {
-        String nombreCliente = nombreClienteEditText.getText().toString();
-        String apellidoCliente = apellidoClienteEditText.getText().toString();
-        String direccion = direccionEditText.getText().toString();
-        String producto = productoEditText.getText().toString();
-        String cantidad = cantidadEditText.getText().toString();
+        // Crea un adaptador personalizado y asigna la lista de bebidas
+        adapter = new BeverageAdapter(beverages);
 
-        if (nombreCliente.isEmpty() && cantidad.isEmpty() && apellidoCliente.isEmpty() && direccion.isEmpty() && producto.isEmpty()) {
-            nombreClienteEditText.setError("Campo obligatorio");
-            apellidoClienteEditText.setError("Campo obligatorio");
-            direccionEditText.setError("Campo obligatorio");
-            productoEditText.setError("Campo obligatorio");
-            cantidadEditText.setError("Campo obligatorio");
-            return false;
-        }
-
-        // Puedes agregar más validaciones según tus necesidades
-
-        return true;
+        // Establece el adaptador en el RecyclerView
+        recyclerView.setAdapter(adapter);
     }
 }

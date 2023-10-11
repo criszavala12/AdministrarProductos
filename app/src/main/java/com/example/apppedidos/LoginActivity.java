@@ -13,10 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
-    EditText emailEditText,passwordEditText;
+    EditText emailEditText, passwordEditText;
     Button loginBtn;
     ProgressBar progressBar;
     TextView createAccountBtnTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Boolean result = MyDB.checkUser(email, password);
                     if (result) {
+                        // Actualiza el indicador session_active a 1 después de un inicio de sesión exitoso
+                        MyDB.updateSessionActive(email, 1);
                         Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
@@ -56,4 +59,4 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    }
+}

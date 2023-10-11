@@ -1,105 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp"
-    android:background="@drawable/background"
-    tools:context=".PedidosActivity">
-    <androidx.cardview.widget.CardView
+    tools:context=".MainActivity">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        android:id="@+id/title_bar_layout">
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:id="@+id/page_title"
+            android:text="Productos"
+            android:textSize="32sp"
+            android:gravity="center"
+            android:layout_marginStart="118dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"/>
 
-            <!-- Título del formulario -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Realizar Pedido"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:padding="16dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="16dp"/>
 
-            <!-- Campo de Nombre del Cliente -->
-            <EditText
-                android:id="@+id/editTextNombreCliente"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Nombre del Cliente"
-                android:padding="16dp"
-                android:backgroundTint="@color/md_grey_300"
-                android:background="@drawable/rounded_corner"
-                android:inputType="text"/>
-            <EditText
-                android:id="@+id/editTextApellidoCliente"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:hint="Apellido del Cliente"
-                android:padding="16dp"
-                android:backgroundTint="@color/md_grey_300"
-                android:background="@drawable/rounded_corner"
-                android:inputType="text"/>
 
-            <!-- Campo de Dirección -->
-            <EditText
-                android:id="@+id/editTextDireccion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:hint="Dirección de Entrega"
-                android:padding="16dp"
-                android:backgroundTint="@color/md_grey_300"
-                android:background="@drawable/rounded_corner"
-                android:inputType="text"/>
 
-            <!-- Campo de Producto -->
-            <TextView
-                android:id="@+id/editTextProducto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:padding="16dp"
+    </RelativeLayout>
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_below="@id/title_bar_layout"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/md_grey_300"
+        android:background="@drawable/rounded_corner"
+        app:iconifiedByDefault="false"
+        app:queryHint="Buscar producto" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_marginTop="100dp"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar_layout"
+        android:id="@+id/recyler_view"/>
 
-                android:backgroundTint="@color/md_grey_300"
-                android:background="@drawable/rounded_corner"
-                android:hint="Nombre del Producto"
-                android:inputType="text"/>
 
-            <!-- Campo de Cantidad -->
-            <EditText
-                android:id="@+id/editTextCantidad"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Cantidad"
-                android:padding="16dp"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="@color/md_grey_300"
-                android:background="@drawable/rounded_corner"
-                android:inputType="number"/>
-
-            <!-- Botón para Confirmar el Pedido -->
-            <Button
-                android:id="@+id/btnConfirmarPedido"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Confirmar Pedido"
-                android:textColor="@color/black"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"/>
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</LinearLayout>
+</RelativeLayout>
